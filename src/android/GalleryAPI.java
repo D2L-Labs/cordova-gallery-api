@@ -250,8 +250,13 @@ public class GalleryAPI extends CordovaPlugin {
     }
 
     private JSONObject getMediaThumbnail(JSONObject media) throws JSONException {
-
         File thumbnailPath = thumbnailPathFromMediaId(media.getString("id"));
+
+        if (!thumbnailPath) {
+            System.out.println("Could not get thumbnail path");
+            media.put("error", "true");
+            return;
+        }
         if (thumbnailPath.exists()) {
             System.out.println("Thumbnail Already Exists!!!. Not Creating New One");
             media.put("thumbnail", thumbnailPath);
